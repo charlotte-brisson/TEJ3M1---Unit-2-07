@@ -1,33 +1,42 @@
 
-#include <servo.h>
-Servo servoNumber1;
-const int trigPin = 9;
-const int echoPin = 10;
+#include <Servo.h>
 
-float duration, distance;
+Servo servoNumber1;
+const int SERVO_CONTROL_PIN = 2;
+const int TRIG_PIN = 10;
+const int ECHO_PIN = 9;
+long distance;
+long duration;
 
 void setup() {
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+  servoNumber1.attach(SERVO_CONTROL_PIN);
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
   Serial.begin(9600);
-   servoNumber1.attach(2);
-  servoNumber1.write(0);
 }
-servoNumber1;
+
 void loop() {
-  digitalWrite(trigPin, LOW);
+  // put your main code here, to run repeatedly
+
+  digitalWrite(TRIG_PIN, LOW);
   delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
+  digitalWrite(TRIG_PIN, HIGH);
   delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distance = (duration*.0343)/2;
-  Serial.print("Distance: ");
-  Serial.println(distance);
-  delay(100);
-    // put your main code here, to run repeatedly
-  servoNumber1.write(90);
-  delay(1000);
-  servoNumber1.write(0);
-  delay(1000);
+  digitalWrite(TRIG_PIN, LOW);
+  
+  duration = pulseIn(ECHO_PIN, HIGH);
+  distance = (duration * 0.0343) / 2;
+  
+  Serial.print("Distance: ");  
+  Serial.println(distance);  
+  
+  if (distance <= 50) {
+    servoNumber1.write(90);
+  } else {
+    servoNumber1.write(0);
+  }
+    
+  
+  delay(3000);
 }
+		
